@@ -1,11 +1,12 @@
 <div class="item">
-  <div>Categoria {{productID}} </div>
+  <div>Categoria {{productID}}
+  </div>
   <div>
     <select name="category_id">
 
       {% for category in categories %}
-      <option value="{{category.id}}" {% if product.category_id==category.id %}selected {% endif %}>{{category.name}}
-      </option>
+        <option value="{{category.id}}" {% if product.category_id==category.id %}selected {% endif %}>{{category.name}}
+        </option>
       {% endfor %}
 
     </select>
@@ -25,7 +26,36 @@
     <textarea name="description" value="{{ produtc.description }}">{{ product.description }}</textarea>
   </div>
 </div>
+<div class="item">
+  <div>Fotos</div>
+  <div>
+    <div id="photos-upload">
+      <input 
+                    id="photos-input"
+                    type="file" 
+                    name="photos" 
+                    multiple
+                    accept="image/*"
+                    onchange="PhotosUpload.handleFileInput(event)"
+                >
+      <p>Selecione até 6 fotos</p>
+    </div>
 
+    <div id="photos-preview">
+      {% if files %}
+        {% for image in files %}
+          <div class="photo" id="{{image.id}}">
+            <img src="{{image.src}}" alt="{{image.name}}">
+            <i class="material-icons"
+              onclick="PhotosUpload.removeOldPhoto(event)"
+            >close</i>
+          </div>
+        {% endfor %}
+        <input type="hidden" name="removed_files">
+      {% endif %}
+    </div>
+  </div>
+</div>
 
 <div class="item">
   <div>Valor</div>
@@ -34,8 +64,8 @@
   </div>
 
   {% if product.old_price %}
-     <input type="hidden" name="old_price" value="{{ product.old_price }}">
-  {% endif %} 
+    <input type="hidden" name="old_price" value="{{ product.old_price }}">
+  {% endif %}
 </div>
 
 <div class="item">
@@ -45,19 +75,19 @@
   </div>
 </div>
 
-{% if product.status %}
+{% if (product.status == "1") 
+  or(product.status == "0") %}
   <div class="item">
-  <div>Disponível</div>
-  <div>
-    <span>
-      <input type="radio" name="status" value="1" {% if product.status == '1' %} checked {% endif %}> Disponivel
+    <div>Disponível</div>
+    <div>
+      <span>
+        <input type="radio" name="status" value="1" {% if product.status == '1' %} checked {% endif %}> Disponivel
     </span>
-    <span>
-      <input type="radio" name="status" value="0" {% if product.status == '0'  %} checked {% endif %}> Indisponível
+      <span>
+        <input type="radio" name="status" value="0" {% if product.status == '0'  %} checked {% endif %}> Indisponível
     </span>
+    </div>
   </div>
-</div>
 {% endif %}
-
 
 </div>
