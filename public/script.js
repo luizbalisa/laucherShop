@@ -40,6 +40,7 @@ const PhotosUpload = {
   preview: document.querySelector("#photos-preview"),
   uploadLimit: 6,
   files: [],
+
   handleFileInput(event) {
     const { files: fileList } = event.target;
     PhotosUpload.input = event.target;
@@ -119,6 +120,7 @@ const PhotosUpload = {
     button.innerHTML = "close";
     return button;
   },
+
   removePhoto(event) {
     const photoDiv = event.target.parentNode;
     const newFiles = Array.from(PhotosUpload.preview.children).filter(function (
@@ -135,6 +137,7 @@ const PhotosUpload = {
 
     photoDiv.remove();
   },
+
   removeOldPhoto(event) {
     const photoDiv = event.target.parentNode;
     console.log("id", photoDiv);
@@ -147,11 +150,12 @@ const PhotosUpload = {
 
     photoDiv.remove();
   },
+
   updateInputFiles() {
     PhotosUpload.input.files = PhotosUpload.getAllFiles();
   },
 };
-console.log(PhotosUpload.files);
+
 const ImageGallery = {
   highlight: document.querySelector(".gallery .highlight > img"),
   previews: document.querySelectorAll(".gallery-preview img"),
