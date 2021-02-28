@@ -1,9 +1,30 @@
-const { formatPrice } = require("../../lib/utils");
+const { formatPrice, date } = require("../../lib/utils");
 const Category = require("../model/Category");
 const File = require("../model/File");
 const Products = require("../model/Products");
 
 module.exports = {
+  async show(req, res) {
+    let results = await Products.find(req.params.id);
+    const product = results.rows[0];
+
+    if (!product) return res.send("is not product");
+
+    const { day, month, hour, minutes } = date(product.updated_at);
+    console.log(minutes);
+
+    product.published = {
+      day: `${day}/${month}`,
+      hour: `${hour}h${minutes}`,
+    };
+
+    console.log(product.published);
+
+    product.old_price = formatPrice(product.old_price);
+    product.price = formatPrice(product.price);
+
+    return res.render("products/show", { product });
+  },
   async create(req, res) {
     // pegar as categorias:
     let results = await Category.all();
@@ -52,8 +73,6 @@ module.exports = {
         return res.send("Informe os acampo aqui");
       }
     }
-    console.log("files", req.files);
-    console.log("body", req.body);
     if (req.files.length != 0) {
       const newFilesPromise = req.files.map((file) =>
         File.create({ ...file, product_id: req.body.id }),
@@ -81,7 +100,7 @@ module.exports = {
 
     await Products.update(req.body);
 
-    return res.redirect(`/products/edit/${req.body.id}`);
+    return res.redirect(`/products/${req.body.id}`);
   },
 
   async edit(req, res) {
@@ -98,7 +117,6 @@ module.exports = {
 
     results = await Products.files(product.id);
     let files = results.rows;
-    console.log(files);
 
     files = files.map((file) => ({
       ...file,
@@ -107,8 +125,6 @@ module.exports = {
         "",
       )}`,
     }));
-
-    console.log(files);
 
     return res.render("products/edit.njk", { product, categories, files });
   },
