@@ -11,20 +11,30 @@ module.exports = {
     if (!product) return res.send("is not product");
 
     const { day, month, hour, minutes } = date(product.updated_at);
-    console.log(minutes);
+    console.log(hour);
 
     product.published = {
       day: `${day}/${month}`,
       hour: `${hour}h${minutes}`,
     };
 
-    console.log(product.published);
-
     product.old_price = formatPrice(product.old_price);
     product.price = formatPrice(product.price);
 
-    return res.render("products/show", { product });
+    results = await Products.files(product.id);
+    let files = results.rows;
+
+    files = files.map((file) => ({
+      ...file,
+      src: `${req.protocol}://${req.headers.host}${file.path.replace(
+        "public",
+        "",
+      )}`,
+    }));
+
+    return res.render("products/show", { product, files });
   },
+
   async create(req, res) {
     // pegar as categorias:
     let results = await Category.all();
