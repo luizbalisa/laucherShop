@@ -3,7 +3,7 @@ const database = require("../../config/db");
 module.exports = {
   all() {
     // pegas toda as categoria do db
-    return database.query(`SELECT * FROM categories`);
+    return database.query(`SELECT * FROM products ORDER BY updated_at DESC`);
   },
 
   create(data) {
