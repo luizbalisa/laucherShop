@@ -179,7 +179,7 @@ section.form form .item > div:nth-child(1) {
   font-weight: bold;
   margin-bottom: 8px;
 }
-
+section.form form .item .input input,
 section.form form .item input[type="text"],
 section.form form .item input[type="number"],
 section.form form .item textarea,
@@ -522,3 +522,18 @@ form .item #photos-preview img {
   color: black;
   font-weight: bold;
 }
+
+
+/* User regiter */
+.user-register.container.form{
+  max-width: 500px;
+}
+
+section.form form .item input[name="email"],
+section.form form .item input[name="password"],
+section.form form .item input[name="passwordRepeat"],
+section.form form .item input[name="cpf_cnpj"],
+section.form form .item input[name="cep"] {
+  width: 50%;
+}
+

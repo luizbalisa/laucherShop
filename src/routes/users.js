@@ -1,8 +1,8 @@
 const express = require("express");
 const routes = express.Router();
 
-const SessionController = require("../app/controller/sessionController");
-const UserController = require("../app/controller/ProductController");
+const SessionController = require("../app/controller/SessionController");
+const UserController = require("../app/controller/UserController");
 
 //LOGIN 
 //LOGIN/LOGOUT
@@ -16,7 +16,7 @@ const UserController = require("../app/controller/ProductController");
 // routes.post("/forgot-pasword", SessionController.fortgot);
 // routes.post("/pasword-reset", SessionController.reset);
 
-// //USER REGISTER USERCONTROLLWE
+// //USER REGISTER USER cCONTROLLWE
 routes.get("/register", UserController.registerForm);
 // routes.post("/register", UserController.post);
 

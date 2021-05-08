@@ -1,0 +1,53 @@
+<div class="item">
+  <div>Nome Completo</div>
+  <div class="input">
+    <input type="text" name="name" placeholder="Digite o seu nome" value="{{ user.nome }}">
+  </div>
+</div>
+
+<div class="item">
+  <div>Email</div>
+  <div class="input">
+    <input type="email" name="email" placeholder="Digite o seu email" value="{{ user.email }}">
+  </div>
+</div>
+
+<div class="item">
+  <div>Password</div>
+  <div class="input">
+    <input type="password" name="password" placeholder="Digite uma senha" value="{{ user.password }}">
+  </div>
+</div>
+
+{% if not user.id %}
+  <div class="item">
+    <div>Repita a senha</div>
+    <div class="input">
+      <input type="password" name="passwordRepeat" placeholder="Confirme a senha">
+    </div>
+  </div>
+{% endif %}
+
+<div class="item">
+  <div>CEP</div>
+  <div class="input">
+    <input type="text" name="cep" placeholder="0000-000" value="{{ user.cep }}" onkeydown="Mask.apply(this, 'cep')">
+  </div>
+</div>
+
+<div class="item">
+  <div class="input">Endereço Completo</div>
+  <div>
+    <input type="text" name="address" placeholder="Digite seu endereço" value="{{ user.address }}">
+  </div>
+</div>
+
+<div class="item">
+  <div class="input">CPF ou CNPJ</div>
+  <div>
+    <input type="text" name="cpf_cnpj" placeholder="Informe o numero do ceu documento" 
+    value="{{ user.cpf_cnpj }}" onkeydown="Mask.apply(this, 'cpfcnpj')" >
+  </div>
+</div>
+
+</div>
