@@ -1,9 +1,13 @@
 const { formatPrice, date } = require("../../lib/utils");
-const File = require("../model/File");
-const Product = require("../model/Products");
+const User = require("../model/User");
 
 module.exports = {
   async registerForm(req, res) {
-    return res.render("user/register.njk");
+    return res.render("user/register");
+  },
+
+  async post(req, res) {
+    
+    return res.send({ Ok: "OK" });
   },
 };

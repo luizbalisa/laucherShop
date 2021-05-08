@@ -523,17 +523,24 @@ form .item #photos-preview img {
   font-weight: bold;
 }
 
-
 /* User regiter */
-.user-register.container.form{
+.user-register.container.form {
   max-width: 500px;
 }
-
+/* 
 section.form form .item input[name="email"],
 section.form form .item input[name="password"],
 section.form form .item input[name="passwordRepeat"],
 section.form form .item input[name="cpf_cnpj"],
 section.form form .item input[name="cep"] {
   width: 50%;
-}
+} */
 
+/* validate error */
+
+.input .error {
+  background-color: #e74c3c;
+  padding: 4px;
+  border-radius: 4px;
+  color: wheat;
+}

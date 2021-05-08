@@ -7,15 +7,15 @@
 {% block content %}
 
     <section class="user-register container form">
-        <form  method="POST" action="/user/register" enctype="multipart/form-data">
+        <form  method="POST" action="/users/register">
             <div class="header">
-                <h3>egistre-se</h3>
+                <h3>Registre-se</h3>
             </div>
             <div class="fields">
                 {% include 'user/fields.njk' %}
             </div>
 
-            <button class="button" type="submit" onclick="Validate.allFields(event)">Salvar</button>
+            <button class="button" type="submit">Salvar</button>
         </form>
     </section>
 

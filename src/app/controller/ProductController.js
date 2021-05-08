@@ -47,7 +47,7 @@ module.exports = {
     const keys = Object.keys(req.body);
     // salva item na db
 
-    for (const key in keys) {
+    for (const key of keys) {
       if (req.body[key] == "") {
         return res.send("Informe os acampo aqui");
       }
