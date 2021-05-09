@@ -6,7 +6,7 @@ const UserController = require("../app/controller/UserController");
 
 const Validator = require("../app/validators/user");
 
-//LOGIN 
+//LOGIN
 //LOGIN/LOGOUT
 // routes.get('/login', SessionController.loginForm)
 // routes.post('/login', SessionController.login)
@@ -22,9 +22,8 @@ const Validator = require("../app/validators/user");
 routes.get("/register", UserController.registerForm);
 routes.post("/register", Validator.post, UserController.post);
 
-// routes.get("/register", UserController.show);
+routes.get("/", UserController.show);
 // routes.put("/register", UserController.updade);
 // routes.delete("/register", UserController.delete);
-
 
 module.exports = routes;

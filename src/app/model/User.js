@@ -1,5 +1,6 @@
 const db = require("../../config/db");
 const database = require("../../config/db");
+const {hash} = require('bcryptjs')
 
 module.exports = {
   all() {
@@ -7,34 +8,30 @@ module.exports = {
     return database.query(`SELECT * FROM products ORDER BY updated_at DESC`);
   },
 
-  create(data) {
+  async create(data) {
     // query inser para bago de dado
-    const query = `INSERT INTO products (
-      category_id,
-      user_id,
+    const query = `INSERT INTO users (
       name,
-      description,
-      old_price,
-      price,
-      quantity, 
-      status
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      email,
+      password,
+      cpf_cnpj,
+      cep, 
+      address
+    ) VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING id`;
 
-    data.price = data.price.replace(/\D/g, ""); // formata valor para int
-
+const passwordHash = await hash(data.password, 8)
     const values = [
-      data.category_id,
-      data.user_id || 1,
       data.name,
-      data.description,
-      data.old_price || data.price,
-      data.price,
-      data.quantity,
-      data.status || 1,
+      data.email,
+      passwordHash,
+      data.cpf_cnpj.replace(/\D/g, ""),
+      data.cep.replace(/\D/g, ""),
+      data.address,
     ]; //
 
-    return database.query(query, values);
+    const results = await database.query(query, values);
+    return results.rows[0].id
   },
 
   update(data) {
