@@ -12,6 +12,8 @@ module.exports = {
 
   async post(req, res) {
     const userId = await User.create(req.body);
+    console.log((req.session.userId = userId));
+    req.session.userId = userId;
     return res.redirect("/users");
   },
 };

@@ -2,10 +2,8 @@ const User = require("../model/User");
 
 async function post(req, res, next) {
   const keys = Object.keys(req.body);
-  console.log(keys);
 
   for (const key of keys) {
-    console.log(req.body[key]);
     if (req.body[key] == "") {
       return res.render("user/register", {
         error: "Preencha todos os campos",
