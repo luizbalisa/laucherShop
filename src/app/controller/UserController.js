@@ -1,4 +1,5 @@
-const { formatPrice, date } = require("../../lib/utils");
+const { renderString } = require("nunjucks");
+const { formatCpfCnpj, formatCep } = require("../../lib/utils");
 const User = require("../model/User");
 
 module.exports = {
@@ -7,7 +8,12 @@ module.exports = {
   },
 
   async show(req, res) {
-    return res.send("ok cadastrado :)");
+    const { user } = req;
+
+    user.cpf_cnpj = formatCpfCnpj(user.cpf_cnpj);
+    user.cep = formatCep(user.cep);
+
+    return res.render("user/index", { user });
   },
 
   async post(req, res) {
@@ -15,5 +21,35 @@ module.exports = {
     console.log((req.session.userId = userId));
     req.session.userId = userId;
     return res.redirect("/users");
+  },
+
+  async update(req, res) {
+    try {
+      const { user } = req;
+      let { name, email, cpf_cnpj, cep, address } = req.body;
+
+      cpf_cnpj = cpf_cnpj.replace(/\D/g, "");
+      cep.replace(/\D/g, "");
+
+      await User.update(user.id, {
+        name,
+        email,
+        cpf_cnpj,
+        cep,
+        address,
+      });
+
+      return res.render("user/index", {
+        user,
+        success: "Conta atualizada com sucesso!",
+      });
+
+    } catch (error) {
+      console.log(error);
+      return res.render("user/index", {
+        user: req.body,
+        error: "Algo deu errado",
+      });
+    }
   },
 };

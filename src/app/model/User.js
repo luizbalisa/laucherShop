@@ -1,6 +1,6 @@
 const db = require("../../config/db");
 const database = require("../../config/db");
-const {hash} = require('bcryptjs')
+const { hash } = require("bcryptjs");
 
 module.exports = {
   all() {
@@ -20,7 +20,7 @@ module.exports = {
     ) VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING id`;
 
-const passwordHash = await hash(data.password, 8)
+    const passwordHash = await hash(data.password, 8);
     const values = [
       data.name,
       data.email,
@@ -31,34 +31,26 @@ const passwordHash = await hash(data.password, 8)
     ]; //
 
     const results = await database.query(query, values);
-    return results.rows[0].id
+    return results.rows[0].id;
   },
 
-  update(data) {
-    const query = `UPDATE products SET
-      category_id=($1),
-      user_id=($2),
-      name=($3),
-      description=($4),
-      old_price=($5),
-      price=($6),
-      quantity=($7),
-      status=($8)
-    WHERE id = $9 `;
+  async update(id, fields) {
+    try {
+      let query = `UPDATE users SET`;
 
-    const values = [
-      data.category_id,
-      data.user_id || 1,
-      data.name,
-      data.description,
-      data.old_price || data.price,
-      data.price,
-      data.quantity,
-      data.status || 1,
-      data.id,
-    ]; //
-
-    return database.query(query, values);
+      Object.keys(fields).map((key, index, array) => {
+        if (index + 1 < array.length) {
+          query = ` ${query} 
+          ${key} = '${fields[key]}', `;
+        } else {
+          query = ` ${query} ${key} = '${fields[key]}' WHERE id = ${id} `;
+        }
+      });
+      await database.query(query);
+      return; 
+    } catch (error) {
+      console.log(error);
+    }
   },
 
   async findOne(filters) {

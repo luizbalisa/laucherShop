@@ -13,9 +13,7 @@ routes.use("/products", products);
 routes.use("/users", users);
 
 //alis/ atalhos
-routes.get("/ads/create", ProductController.create);
-routes.get("/accounts", (req, res) => {
-  res.render("user/register.njk");
-});
+routes.get("/ads/create", (req, res) => res.redirect("/products/create"));
+routes.get("/accounts", (req, res) => res.redirect("users/login"));
 
 module.exports = routes;

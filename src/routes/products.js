@@ -2,6 +2,7 @@ const express = require("express");
 const routes = express.Router();
 
 const multer = require("../app/middlewares/multer");
+const { onlyUsers } = require("../app/middlewares/session");
 const ProductController = require("../app/controller/ProductController");
 const SearchController = require("../app/controller/SearchController");
 
@@ -9,7 +10,7 @@ const SearchController = require("../app/controller/SearchController");
 //Search
 routes.get("/search", SearchController.index);
 //CREATE
-routes.get("/create", ProductController.create);
+routes.get("/create", onlyUsers, ProductController.create);
 //EDIT
 routes.get("/edit/:id", ProductController.edit);
 //SHOW

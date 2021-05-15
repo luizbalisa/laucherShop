@@ -1,7 +1,7 @@
 <div class="item">
   <div>Nome Completo</div>
   <div class="input">
-    <input type="text" name="name" placeholder="Digite o seu nome" value="{{ user.nome }}">
+    <input type="text" name="name" placeholder="Digite o seu nome" value="{{ user.name }}">
   </div>
 </div>
 
@@ -15,7 +15,13 @@
 <div class="item">
   <div>Password</div>
   <div class="input">
-    <input type="password" name="password" placeholder="Digite uma senha">
+    <input type="password" name="password" 
+    {% if not user.id %}
+      placeholder="Digite uma senha"
+    {%else%}copr
+      placeholder="Digite sua senha para atualiza o cadastro"
+    {% endif %}>
+
   </div>
 </div>
 
