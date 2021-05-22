@@ -6,7 +6,10 @@ const UserController = require("../app/controller/UserController");
 
 const UserValidator = require("../app/validators/user");
 const SessionValidator = require("../app/validators/session");
-const { isLoggedRedirectUsers, onlyUsers } = require("../app/middlewares/session");
+const {
+  isLoggedRedirectUsers,
+  onlyUsers,
+} = require("../app/middlewares/session");
 
 //LOGIN
 //LOGIN/LOGOUT
@@ -14,13 +17,13 @@ routes.get("/login", isLoggedRedirectUsers, SessionController.loginForm);
 routes.post("/login", SessionValidator.login, SessionController.login);
 routes.post("/logout", SessionController.logout);
 
-// //RESET PASSWORD / FORGOT
-// routes.get("/forgot-pasword", SessionController.fortgotForm);
-// routes.get("/pasword-reset", SessionController.resetForm);
-// routes.post("/forgot-pasword", SessionController.fortgot);
-// routes.post("/pasword-reset", SessionController.reset);
+// RESET PASSWORD / FORGOT
+routes.get("/forgot-password", SessionController.fortgotForm);
+// routes.get("/password-reset", SessionController.resetForm);
+routes.post("/forgot-password", SessionValidator.forgot, SessionController.forgot);
+// routes.post("/password-reset", SessionController.reset);
 
-// //USER REGISTER USER cCONTROLLWE
+// USER REGISTER USER CONTROLLWE
 routes.get("/register", UserController.registerForm);
 routes.post("/register", onlyUsers, UserValidator.post, UserController.post);
 
