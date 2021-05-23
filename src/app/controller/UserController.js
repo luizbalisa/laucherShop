@@ -1,5 +1,6 @@
 const { renderString } = require("nunjucks");
 const { formatCpfCnpj, formatCep } = require("../../lib/utils");
+
 const User = require("../model/User");
 
 module.exports = {
@@ -18,7 +19,7 @@ module.exports = {
 
   async post(req, res) {
     const userId = await User.create(req.body);
-    console.log((req.session.userId = userId));
+
     req.session.userId = userId;
     return res.redirect("/users");
   },
@@ -43,12 +44,28 @@ module.exports = {
         user,
         success: "Conta atualizada com sucesso!",
       });
-
     } catch (error) {
       console.log(error);
       return res.render("user/index", {
         user: req.body,
         error: "Algo deu errado",
+      });
+    }
+  },
+
+  async delete(req, res) {
+    try {
+      await User.delete(req.body.id);
+      req.session.destroy();
+
+      return res.render("session/login", {
+        success: "Conta deletada com sucesso!",
+      });
+    } catch (err) {
+      console.log(err);
+      return res.render("user/index", {
+        user: req.body,
+        error: "Erro ao tenta deleta a conta!",
       });
     }
   },

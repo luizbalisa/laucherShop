@@ -58,6 +58,7 @@ module.exports = {
       return res.send("Please, send at least one image");
     }
 
+    req.body.user_id = req.session.userId
     //pega os cado do lado do cliente e joga no bando de dados
     let results = await Products.create(req.body);
     const productID = results.rows[0].id; // pesquisa pelo id criado

@@ -1,7 +1,8 @@
 const db = require("../../config/db");
 const database = require("../../config/db");
 const { hash } = require("bcryptjs");
-
+const Products = require("../model/Products");
+const fs = require("fs");
 module.exports = {
   all() {
     // pegas toda as categoria do db
@@ -47,7 +48,7 @@ module.exports = {
         }
       });
       await database.query(query);
-      return; 
+      return;
     } catch (error) {
       console.log(error);
     }
@@ -70,7 +71,29 @@ module.exports = {
     return results.rows[0];
   },
 
-  delete(id) {
-    return database.query("DELETE FROM products WHERE id = $1", [id]);
+  async delete(id) {
+    let results = await database.query(
+      "SELECT * FROM products WHERE user_id = $1",
+      [id],
+    );
+    const products = results.rows;
+
+    const allFilesPromise = products.map((product) =>
+      Products.files(product.id),
+    );
+
+    let promiseResults = await Promise.all(allFilesPromise);
+
+    await database.query("DELETE FROM users WHERE id = $1", [id]);
+
+    promiseResults.map((results) =>
+      results.rows.map((file) => {
+        try {
+          fs.unlinkSync(file.path);
+        } catch (error) {
+          console.log(error);
+        }
+      }),
+    );
   },
 };
