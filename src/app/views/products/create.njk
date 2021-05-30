@@ -1,20 +1,22 @@
 {% extends "layout.njk" %}
 
-{% block head %}
-    <link rel="stylesheet" href="../../style.css">
-{% endblock head %}
-
 {% block content %}
 
-    <section class="conatiner form">
-        <form  method="POST" action="/products" enctype="multipart/form-data">
+<section class="container form">
+    <form method="POST" action="/products" enctype="multipart/form-data">
 
-            <div class="fields">
-                {% include 'products/fields.njk' %}
-            </div>
+        <div class="header">
+            <h3>Cadastrar Produto {{productId}}</h3>
+        </div>
 
-            <button class="button" type="submit" onclick="Validate.allFields(event)">Salvar</button>
-        </form>
-    </section>
+        
+        <div class="fields">
+            {% include 'products/fields.njk' %}
+        </div>
+
+        <button class="button" type="submit">Salvar</button>
+    </form>
+</section>
+
 
 {% endblock content %}

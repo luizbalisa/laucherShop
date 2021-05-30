@@ -1,19 +1,24 @@
-const express = require("express");
-const routes = express.Router();
-const ProductController = require("../app/controller/ProductController");
-const HomeController = require("../app/controller/HomeController");
+const express = require('express')
+const routes = express.Router()
 
-const products = require("./products");
-const users = require("./users");
+const HomeController = require('../app/controllers/HomeController')
 
-//HOME
-routes.get("/", HomeController.index);
+const products = require('./products')
+const users = require('./users')
 
-routes.use("/products", products);
-routes.use("/users", users);
+routes.get('/', HomeController.index)
 
-//alis/ atalhos
-routes.get("/ads/create", (req, res) => res.redirect("/products/create"));
-routes.get("/accounts", (req, res) => res.redirect("users/login"));
+routes.use('/products', products)
+routes.use('/users', users)
 
-module.exports = routes;
+// Alias
+routes.get('/ads/create', function(req, res) {
+    return res.redirect("/products/create")
+})
+
+routes.get('/accounts', function(req, res) {
+    return res.redirect("/users/login")
+})
+
+
+module.exports = routes

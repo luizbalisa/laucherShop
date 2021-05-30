@@ -1,20 +1,18 @@
 function onlyUsers(req, res, next) {
-  if (!req.session.userId) {
-    return res.redirect("/users/login");
-  }
-
-  next();
+    if (!req.session.userId)
+        return res.redirect('/users/login')
+    
+    next()
 }
 
-function isLoggedRedirectUsers(req, res, next) {
-  if (req.session.userId) {
-    return res.redirect("/users/");
-  }
+function isLoggedRedirectToUsers(req, res, next) {
+    if (req.session.userId)
+        return res.redirect('/users')
 
-  next();
+    next()
 }
 
 module.exports = {
-  onlyUsers,
-  isLoggedRedirectUsers,
-};
+    onlyUsers,
+    isLoggedRedirectToUsers
+}
