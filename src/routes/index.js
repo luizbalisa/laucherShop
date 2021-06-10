@@ -8,6 +8,7 @@ const users = require('./users')
 
 routes.get('/', HomeController.index)
 
+// user
 routes.use('/products', products)
 routes.use('/users', users)
 
