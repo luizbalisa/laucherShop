@@ -3,15 +3,17 @@ const db = require("../../config/db");
 function find(filters, table) {
   let query = `SELECT * FROM ${table}`;
 
-  Object.keys(filters).map((key) => {
-    // WHERE | OR | AND
-    query += `${key}`;
+  if (filters) {
+    Object.keys(filters).map((key) => {
+      console.log(filters);
+      // WHERE | OR | AND
+      query += ` ${key}`;
 
-    Object.keys(filters[key]).map((field) => {
-      query += `${field} = '${filters[key][field]}'`;
+      Object.keys(filters[key]).map((field) => {
+        query += ` ${field} = '${filters[key][field]}'`;
+      });
     });
-
-  });
+  }
 
   return db.query(query);
 }
@@ -25,7 +27,7 @@ const Base = {
   },
 
   async find(id) {
-    const results = await find({ where: { id } }, this.tables);
+    const results = await find({ where: { id } }, this.table);
 
     return results.rows[0];
   },
@@ -49,7 +51,7 @@ const Base = {
 
       Object.keys(fields).map((key) => {
         keys.push(key);
-        values.push(fields[key]);
+        values.push(`'${fields[key]}'`);
       });
 
       const query = `
@@ -76,21 +78,19 @@ const Base = {
         update.push(line);
 
         // last iteration
-        let query = ` UPDATE ${this.table} SET ${update.join(
-          ",",
-        )} = WHERE id = ${id}`;
       });
 
-      await db.query(query);
+      let query = ` UPDATE ${this.table} SET
+       ${update.join(",")} WHERE id = ${id}`;
 
-      return;
+      return db.query(query);
     } catch (error) {
       console.log(error);
     }
   },
 
   async delete(id) {
-    return db.query("DELETE FROM products WHERE id = $1", [id]);
+    return db.query(`DELETE FROM ${this.table}  WHERE id = $1`, [id]);
   },
 };
 

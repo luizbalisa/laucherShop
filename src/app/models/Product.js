@@ -1,12 +1,17 @@
+const db = require("../../config/db");
 const Base = require("./Base");
+
 Base.init({ table: "products" });
 
 const Products = {
   ...Base,
-  find(id) {
-    return db.query("SELECT * FROM products WHERE id = $1", [id]);
+
+  async files(id) {
+    const result =  await db.query(`SELECT * FROM files WHERE product_id = $1`, [id]);
+    return result.rows
   },
-  search(params) {
+
+  async search(params) {
     const { filter, category } = params;
 
     let query = "",
@@ -32,7 +37,8 @@ const Products = {
               ${filterQuery}
           `;
 
-    return db.query(query);
+          const results = await db.query(query);
+    return results.rows
   },
 };
 

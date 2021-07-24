@@ -85,3 +85,14 @@ ADD CONSTRAINT files_product_id_fkey
 FOREIGN KEY ("prduct_id")
 REFERENCES "prducts" ("id")
 ON DELETE CASCADE
+
+
+-- to run seeds
+DELETE FROM products;
+DELETE FROM users;
+DELETE FROM files;
+
+-- resets sequnce auto_increment from tables id
+ALTER SEQUENCE products_id_seq RESTART WITH 1;
+ALTER SEQUENCE users RESTART WITH 1;
+ALTER SEQUENCE files_id_seq RESTART WITH 1;

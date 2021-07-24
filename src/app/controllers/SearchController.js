@@ -1,72 +1,50 @@
-const { formatPrice } = require('../../lib/utils')
+const { formatPrice } = require("../../lib/utils");
 
-const Product = require('../models/Product')
+const Product = require("../models/Product");
+const LoadProductService = require("../services/LoadProductService");
 
-module.exports = { 
-    async index(req, res) {
-        try {
-            let results,
-                params = {}
+module.exports = {
+  async index(req, res) {
+    try {
+      let params = {};
 
-            const { filter, category } = req.query
+      const { filter, category } = req.query;
 
-            if (!filter) return res.redirect("/")
+      if (!filter) return res.redirect("/");
 
-            params.filter = filter
+      params.filter = filter;
 
-            if (category) {
-                params.category = category
-            }
+      if (category) {
+        params.category = category;
+      }
 
-            results = await Product.search(params)
+      let products = await Product.search(params);
 
-            async function getImage(productId) {
-                let results = await Product.files(productId)
-                const files = results.rows.map(file => `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`)
+      const productsPromise = await products.map(LoadProductService.format)
 
-                return files[0]
-            }
+      products = await Promise.all(productsPromise);
 
-            const productsPromise =  results.rows.map(async product => {
-                product.img = await getImage(product.id)
-                product.oldPrice = formatPrice(product.old_price)
-                product.price = formatPrice(product.price)
-                return product
-            })
+      const search = {
+        term: req.query.filter,
+        total: products.length,
+      };
 
-            const products = await Promise.all(productsPromise)
+      const categories = products
+        .map((product) => ({
+          id: product.category_id,
+          name: product.category_name,
+        }))
+        .reduce((categoriesFiltered, category) => {
+          const found = categoriesFiltered.some((cat) => cat.id == category.id);
 
+          if (!found) categoriesFiltered.push(category);
 
-            const search = {
-                term: req.query.filter,
-                total: products.length
-            }
+          return categoriesFiltered;
+        }, []);
 
-
-
-            const categories = products.map(product => ({
-                id: product.category_id,
-                name: product.category_name
-            })).reduce((categoriesFiltered, category) => {
-
-                const found = categoriesFiltered.some(cat => cat.id == category.id)
-
-                if (!found)
-                    categoriesFiltered.push(category)
-
-                return categoriesFiltered
-            }, [])
-
-
-
-
-            return res.render("search/index", { products, search, categories })
-
-
-        }
-        catch(err) {
-            console.error(err)
-        }
-        
+      return res.render("search/index", { products, search, categories });
+    } catch (err) {
+      console.error(err);
     }
-}
+  },
+};
