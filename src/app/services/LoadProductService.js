@@ -4,6 +4,7 @@ const { formatPrice, date } = require("../../lib/utils");
 
 async function getImages(productId) {
   let files = await Product.files(productId);
+  
   files = files.map((file) => ({
     ...file,
     src: `${file.path.replace("public", "")}`,
@@ -31,7 +32,7 @@ async function format(product) {
 }
 
 const LoadService = {
-  load(service, filter) {
+  load(service, filter) { 
     this.filter = filter;
     return this[service]();
   },
